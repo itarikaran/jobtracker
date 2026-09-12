@@ -1,9 +1,15 @@
-import { BriefcaseBusiness, LayoutDashboard, PlusCircle } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Building2,
+  LayoutDashboard,
+  PlusCircle,
+} from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const navItems = [
   { label: "Dashboard", to: "/", icon: LayoutDashboard, end: true },
   { label: "Applications", to: "/applications", icon: BriefcaseBusiness, end: true },
+  { label: "Companies", to: "/companies", icon: Building2, end: true },
   { label: "Add Application", to: "/applications/add", icon: PlusCircle },
 ];
 
@@ -20,6 +26,7 @@ function Sidebar() {
           <div className="text-2xl font-bold tracking-tight text-indigo-700">
             JobTracker
           </div>
+
           <div className="mt-0.5 text-sm font-medium text-slate-500">
             Career Manager
           </div>
@@ -33,7 +40,11 @@ function Sidebar() {
             to={to}
             end={end}
             className={({ isActive }) =>
-              `flex h-11 shrink-0 items-center gap-3 rounded-lg px-3.5 text-sm font-semibold transition-all duration-200 ease-out ${isActive ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-inset ring-indigo-100" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"}`
+              `flex h-11 shrink-0 items-center gap-3 rounded-lg px-3.5 text-sm font-semibold transition-all duration-200 ease-out ${
+                isActive
+                  ? "bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-inset ring-indigo-100"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+              }`
             }
           >
             <Icon size={19} strokeWidth={2.2} />
