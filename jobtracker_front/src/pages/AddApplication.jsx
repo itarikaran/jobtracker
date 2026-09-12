@@ -85,19 +85,21 @@ function AddApplication() {
       <Sidebar />
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 lg:px-7">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {editing ? "Edit Application" : "Add New Application"}
-        </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          {editing
-            ? "Update the details of your job opportunity."
-            : "Log a new job opportunity to track its progress."}
-        </p>
+      <main className="mx-auto w-full max-w-[1280px] px-5 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight">
+            {editing ? "Edit Application" : "Add Application"}
+          </h1>
+          <p className="mt-1 text-sm text-slate-600">
+            {editing
+              ? "Update the details of your job opportunity."
+              : "Log a new job opportunity to track its progress."}
+          </p>
+        </div>
 
         <form
           onSubmit={submit}
-          className="mt-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
+          className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
         >
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 import CompanyService from "../services/CompanyService";
 
 const AddCompany = () => {
@@ -64,15 +66,26 @@ const AddCompany = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-slate-50 md:pl-64">
+      <Sidebar />
+      <Header />
 
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">
-        {isEditMode ? "Edit Company" : "Add Company"}
-      </h1>
+      <main className="mx-auto w-full max-w-[1280px] px-5 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            {isEditMode ? "Edit Company" : "Add Company"}
+          </h1>
 
-      <div className="max-w-2xl rounded-lg border border-slate-200 bg-white p-6">
+          <p className="mt-1 text-sm text-slate-600">
+            {isEditMode
+              ? "Update the details for this company."
+              : "Save a company to use while tracking applications."}
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="max-w-5xl rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+
+        <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
 
           {/* Company Name */}
           <div>
@@ -171,7 +184,7 @@ const AddCompany = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-3 border-t border-slate-100 pt-4 md:col-span-2 xl:col-span-3">
 
             <button
               type="submit"
@@ -197,8 +210,9 @@ const AddCompany = () => {
 
         </form>
 
-      </div>
+        </div>
 
+      </main>
     </div>
   );
 };

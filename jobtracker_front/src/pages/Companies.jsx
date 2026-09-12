@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 import CompanyService from "../services/CompanyService";
 
 const Companies = () => {
@@ -69,16 +71,20 @@ const Companies = () => {
   });
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen bg-slate-50 md:pl-64">
+      <Sidebar />
+      <Header />
+
+      <main className="mx-auto w-full max-w-[1280px] px-5 py-6 sm:px-6 lg:px-8">
 
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
 
         <h1 className="text-2xl font-bold text-slate-900">
           Companies
         </h1>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
 
           {/* Sort */}
           <select
@@ -239,6 +245,7 @@ const Companies = () => {
 
       </div>
 
+      </main>
     </div>
   );
 };
