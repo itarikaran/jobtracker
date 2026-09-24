@@ -58,16 +58,27 @@ const Companies = () => {
     }
   };
 
+  const compareText = (firstValue, secondValue) =>
+    (firstValue ?? "").localeCompare(secondValue ?? "", undefined, {
+      sensitivity: "base",
+    });
+
   const sortedCompanies = [...companies].sort((a, b) => {
     if (sortBy === "companyName") {
-      return a.companyName.localeCompare(b.companyName);
+      return compareText(a.companyName, b.companyName);
     }
 
-    if (sortBy === "district") {
-      return a.district.localeCompare(b.district);
+    const districtComparison = compareText(a.district, b.district);
+    if (districtComparison !== 0) {
+      return districtComparison;
     }
 
-    return 0;
+    const cityComparison = compareText(a.city, b.city);
+    if (cityComparison !== 0) {
+      return cityComparison;
+    }
+
+    return compareText(a.address, b.address);
   });
 
   return (
@@ -97,7 +108,7 @@ const Companies = () => {
             </option>
 
             <option value="district">
-              District (A-Z)
+              Location: District, City, Address (A-Z)
             </option>
           </select>
 
