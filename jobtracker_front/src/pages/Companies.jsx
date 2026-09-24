@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import CompanyService from "../services/CompanyService";
 
 const Companies = () => {
@@ -11,17 +10,18 @@ const Companies = () => {
 
   const navigate = useNavigate();
 
-  const loadCompanies = async () => {
-    try {
-      const response = await CompanyService.getCompanies();
-      setCompanies(response.data);
-    } catch (error) {
-      console.error("Error loading companies:", error);
-    }
-  };
-
   useEffect(() => {
-    loadCompanies();
+    let isCurrent = true;
+
+    CompanyService.getCompanies()
+      .then((response) => {
+        if (isCurrent) setCompanies(response.data);
+      })
+      .catch((error) => console.error("Error loading companies:", error));
+
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   const getCompanyLogo = (website) => {
@@ -51,7 +51,7 @@ const Companies = () => {
       await CompanyService.deleteCompany(id);
 
       setCompanies(
-        companies.filter((company) => company.id !== id)
+        (currentCompanies) => currentCompanies.filter((company) => company.id !== id)
       );
     } catch (error) {
       console.error("Error deleting company:", error);
@@ -84,8 +84,6 @@ const Companies = () => {
   return (
     <div className="min-h-screen bg-slate-50 md:pl-64">
       <Sidebar />
-      <Header />
-
       <main className="mx-auto w-full max-w-[1280px] px-5 py-6 sm:px-6 lg:px-8">
 
       {/* Header */}

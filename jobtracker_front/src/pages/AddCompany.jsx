@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import CompanyService from "../services/CompanyService";
 
 const AddCompany = () => {
@@ -18,23 +17,27 @@ const AddCompany = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isEditMode = Boolean(id);
 
   useEffect(() => {
-    if (isEditMode) {
-      loadCompany();
-    }
-  }, [id]);
+    if (!isEditMode) return;
 
-  const loadCompany = async () => {
-    try {
-      const response = await CompanyService.getCompany(id);
-      setCompany(response.data);
-    } catch (error) {
-      console.error("Error loading company:", error);
-    }
-  };
+    let isCurrent = true;
+    CompanyService.getCompany(id)
+      .then((response) => {
+        if (isCurrent) setCompany(response.data);
+      })
+      .catch((error) => {
+        console.error("Error loading company:", error);
+        if (isCurrent) setErrorMessage("Unable to load this company. Please try again.");
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [id, isEditMode]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +50,12 @@ const AddCompany = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
+
+    if (!company.companyName.trim()) {
+      setErrorMessage("Company name is required.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -60,6 +69,7 @@ const AddCompany = () => {
       navigate("/companies");
     } catch (error) {
       console.error("Error saving company:", error);
+      setErrorMessage("Unable to save this company. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -68,8 +78,6 @@ const AddCompany = () => {
   return (
     <div className="min-h-screen bg-slate-50 md:pl-64">
       <Sidebar />
-      <Header />
-
       <main className="mx-auto w-full max-w-[1280px] px-5 py-6 sm:px-6 lg:px-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -79,13 +87,19 @@ const AddCompany = () => {
           <p className="mt-1 text-sm text-slate-600">
             {isEditMode
               ? "Update the details for this company."
-              : "Save a company to use while tracking applications."}
+              : "Add a company to your company directory."}
           </p>
         </div>
 
         <div className="max-w-5xl rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
 
         <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+          {errorMessage && (
+            <p role="alert" className="text-sm font-medium text-red-600 md:col-span-2 xl:col-span-3">
+              {errorMessage}
+            </p>
+          )}
 
           {/* Company Name */}
           <div>
@@ -96,6 +110,7 @@ const AddCompany = () => {
             <input
               type="text"
               name="companyName"
+              required
               value={company.companyName}
               onChange={handleChange}
               placeholder="Enter company name"
