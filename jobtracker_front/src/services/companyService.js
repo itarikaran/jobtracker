@@ -5,15 +5,12 @@ async function handleResponse(response) {
   if (!response.ok) {
     const message = await response.text();
     throw new Error(
-      message || `Request failed with status ${response.status}`
+      message || `Request failed: ${response.status}`
     );
   }
 
-  if (response.status === 204) {
-    return null;
-  }
-
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
 
 export async function getCompanies() {
@@ -29,9 +26,7 @@ export async function getCompanyById(id) {
 export async function addCompany(company) {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(company),
   });
 
@@ -41,9 +36,7 @@ export async function addCompany(company) {
 export async function updateCompany(id, company) {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(company),
   });
 
