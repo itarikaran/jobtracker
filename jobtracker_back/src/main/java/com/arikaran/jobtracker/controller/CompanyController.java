@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/companies")
-@CrossOrigin(origins = "https://jobtracker-six-psi.vercel.app")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CompanyController {
 
     private final CompanyService companyService;
